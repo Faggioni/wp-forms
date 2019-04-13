@@ -9,4 +9,4 @@ Author URI: 	http://hqrentalsoftware.com
 Text Domain: 	hq-website
 */
 
-require_once ('shortcodes/hq-trial-form.php');
+require_once ('shortcodes/init.php');
