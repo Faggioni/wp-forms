@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import axios from 'axios';
 /*
  * Fields
  */
@@ -8,6 +8,7 @@ import TextField from './TextField';
 import PhoneField from './PhoneField';
 import CheckboxField from './CheckboxField';
 import SubmitButton from './SubmitButton';
+import Captcha from './Captcha';
 class HQWebsiteTrialForm extends Component{
     constructor(props){
         super(props);
@@ -23,7 +24,7 @@ class HQWebsiteTrialForm extends Component{
         }
     }
     onChangeEmail(newEmailValue){
-        this.setState({ form: { ...this.state.form, email_adress: newEmailValue } });
+        this.setState({ form: { ...this.state.form, email_address: newEmailValue } });
     }
     onChangeCompany(newCompanyValue){
         this.setState({ form: { ...this.state.form, company: newCompanyValue } });
@@ -32,7 +33,7 @@ class HQWebsiteTrialForm extends Component{
         this.setState({ form: { ...this.state.form, phone_number: newPhoneValue } });
     }
     onChangeWebsite(newWebsiteValue){
-        this.setState({ form: { ...this.state.form, company: newWebsiteValue } });
+        this.setState({ form: { ...this.state.form, website: newWebsiteValue } });
     }
     onChangeTerms(){
         this.setState({checkedTerms: ! this.state.checkedTerms});
@@ -92,7 +93,7 @@ class HQWebsiteTrialForm extends Component{
                                     checked={this.state.checkedPrivacy}
                                 />
                                 <div className="hq-captcha-wrapper">
-                                    {/*<?php echo $captcha; ?>*/}
+                                    {/*Captcha*/}
                                 </div>
                                 <SubmitButton
                                     onSubmit={this.onSubmitForm.bind(this)}
