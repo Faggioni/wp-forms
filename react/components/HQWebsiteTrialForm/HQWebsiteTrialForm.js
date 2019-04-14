@@ -101,6 +101,7 @@ class HQWebsiteTrialForm extends Component{
         );
     }
     render(){
+        const grecaptchaObject = window.grecaptcha;
         return(
             <div>
                 <div className="elementor-element elementor-element-30425b9 mainform elementor-button-align-end elementor-widget elementor-widget-form">
@@ -162,6 +163,7 @@ class HQWebsiteTrialForm extends Component{
                                         sitekey={this.hqKey}
                                         onChange={this.onChangeCaptcha.bind(this)}
                                         onErrored={this.onFailedCaptcha}
+                                        grecaptcha={grecaptchaObject}
                                     />
                                 </div>
                                 <SubmitButton

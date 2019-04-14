@@ -28752,6 +28752,7 @@ function (_Component) {
     value: function render() {
       var _this3 = this;
 
+      var grecaptchaObject = window.grecaptcha;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "elementor-element elementor-element-30425b9 mainform elementor-button-align-end elementor-widget elementor-widget-form"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -28811,7 +28812,8 @@ function (_Component) {
         },
         sitekey: this.hqKey,
         onChange: this.onChangeCaptcha.bind(this),
-        onErrored: this.onFailedCaptcha
+        onErrored: this.onFailedCaptcha,
+        grecaptcha: grecaptchaObject
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_SubmitButton__WEBPACK_IMPORTED_MODULE_6__["default"], {
         onSubmit: this.onSubmitForm.bind(this),
         buttonText: "Submit"
