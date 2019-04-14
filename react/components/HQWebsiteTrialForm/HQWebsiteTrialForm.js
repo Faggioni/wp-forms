@@ -21,6 +21,8 @@ class HQWebsiteTrialForm extends Component{
         super(props);
         this.connector = new ApiConnector();
         this.validator = new Validator();
+        this.hqKey = '6LfB7RwUAAAAACBpYqkwYZ4GkfP3DTiqa2gsZW2k';
+        this.devKey = '6LdUE54UAAAAAEQMg07RZ-3Bl6sjFYUwwi8OCeoW';
         this.state = {
             form:{
                 business_sector_id: '1',
@@ -169,7 +171,7 @@ class HQWebsiteTrialForm extends Component{
                                 />
                                 <div className="hq-captcha-wrapper">
                                     <ReCAPTCHA
-                                        sitekey="6LdUE54UAAAAAEQMg07RZ-3Bl6sjFYUwwi8OCeoW"
+                                        sitekey={this.hqKey}
                                         onChange={this.onChangeCaptcha.bind(this)}
                                     />
                                 </div>
