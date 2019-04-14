@@ -7,8 +7,8 @@ class PhoneField extends Component{
     render(){
         return(
             <div className="elementor-field-type-tel elementor-field-group elementor-column elementor-field-group-field_2 elementor-col-100 elementor-field-required">
-                <label htmlFor="form-field-field_2" className="elementor-field-label elementor-screen-only">Phone</label>
-                <input size="1" type="tel" name={this.props.nameField} className="elementor-field elementor-size-xs elementor-field-textual" placeholder={this.props.placeholder} required="required" aria-required="true" pattern="[0-9()#&amp;+*-=.]+" title={this.props.title} />
+                <label htmlFor={this.props.for} className="elementor-field-label elementor-screen-only">Phone</label>
+                <input id={this.props.for} value={this.props.value} onChange={this.props.onChange} size="1" type="tel" name={this.props.nameField} className="elementor-field elementor-size-xs elementor-field-textual" placeholder={this.props.placeholder} required="required" aria-required="true" title={this.props.title} />
             </div>
         );
     }
