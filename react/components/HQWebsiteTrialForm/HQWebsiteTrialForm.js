@@ -55,6 +55,7 @@ class HQWebsiteTrialForm extends Component{
         this.setState({ form: { ...this.state.form, g_recaptcha_response: newValue } });
     }
     onFailedCaptcha(){
+        console.log('dasda');
         this.captcha.reset();
     }
     onChangeTerms(){
@@ -160,7 +161,7 @@ class HQWebsiteTrialForm extends Component{
                                         }}
                                         sitekey={this.hqKey}
                                         onChange={this.onChangeCaptcha.bind(this)}
-                                        onErrored={this.onFailedCaptcha.bind(this)}
+                                        onErrored={this.onFailedCaptcha}
                                     />
                                 </div>
                                 <SubmitButton
