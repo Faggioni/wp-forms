@@ -28626,6 +28626,8 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(HQWebsiteTrialForm).call(this, props));
     _this.connector = new _ApiConnector__WEBPACK_IMPORTED_MODULE_8__["default"]();
     _this.validator = new _Validator__WEBPACK_IMPORTED_MODULE_9__["default"]();
+    _this.hqKey = '6LfB7RwUAAAAACBpYqkwYZ4GkfP3DTiqa2gsZW2k';
+    _this.devKey = '6LdUE54UAAAAAEQMg07RZ-3Bl6sjFYUwwi8OCeoW';
     _this.state = {
       form: {
         business_sector_id: '1',
@@ -28644,31 +28646,7 @@ function (_Component) {
   _createClass(HQWebsiteTrialForm, [{
     key: "componentWillMount",
     value: function componentWillMount() {
-      var _this2 = this;
-
-      this.connector.getCaptcha(function (response) {
-        _this2.setState({
-          captcha: response.data
-        });
-      }, function (error) {
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
-        }
-
-        console.log(error.config);
-      });
+      var recaptchaRef = react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef();
     }
   }, {
     key: "onChangeEmail",
@@ -28716,6 +28694,12 @@ function (_Component) {
       });
     }
   }, {
+    key: "onFailedCaptcha",
+    value: function onFailedCaptcha() {
+      console.log('dasda');
+      this.captcha.reset();
+    }
+  }, {
     key: "onChangeTerms",
     value: function onChangeTerms() {
       this.setState({
@@ -28732,11 +28716,11 @@ function (_Component) {
   }, {
     key: "onSubmitForm",
     value: function onSubmitForm(event) {
-      var _this3 = this;
+      var _this2 = this;
 
       event.preventDefault();
       this.validator.formSubmit(this.state.form, function (success) {
-        _this3.connector.submitForm(_this3.state.form, function (response) {
+        _this2.connector.submitForm(_this2.state.form, function (response) {
           console.log(response.data);
           window.location.href = response.data.link;
         }, function (error) {
@@ -28766,6 +28750,8 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this3 = this;
+
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "elementor-element elementor-element-30425b9 mainform elementor-button-align-end elementor-widget elementor-widget-form"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -28820,8 +28806,12 @@ function (_Component) {
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "hq-captcha-wrapper"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_google_recaptcha__WEBPACK_IMPORTED_MODULE_1__["default"], {
-        sitekey: "6LdUE54UAAAAAEQMg07RZ-3Bl6sjFYUwwi8OCeoW",
-        onChange: this.onChangeCaptcha.bind(this)
+        ref: function ref(_ref) {
+          _this3.captcha = _ref;
+        },
+        sitekey: this.hqKey,
+        onChange: this.onChangeCaptcha.bind(this),
+        onErrored: this.onFailedCaptcha
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_SubmitButton__WEBPACK_IMPORTED_MODULE_6__["default"], {
         onSubmit: this.onSubmitForm.bind(this),
         buttonText: "Submit"

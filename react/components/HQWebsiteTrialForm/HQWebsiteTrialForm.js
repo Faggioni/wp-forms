@@ -21,6 +21,8 @@ class HQWebsiteTrialForm extends Component{
         super(props);
         this.connector = new ApiConnector();
         this.validator = new Validator();
+        this.hqKey = '6LfB7RwUAAAAACBpYqkwYZ4GkfP3DTiqa2gsZW2k';
+        this.devKey = '6LdUE54UAAAAAEQMg07RZ-3Bl6sjFYUwwi8OCeoW';
         this.state = {
             form:{
                 business_sector_id: '1',
@@ -35,26 +37,7 @@ class HQWebsiteTrialForm extends Component{
         }
     }
     componentWillMount(){
-        this.connector.getCaptcha( (response) => {
-            this.setState({ captcha: response.data });
-        }, (error) => {
-            if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                console.log(error.response.data);
-                console.log(error.response.status);
-                console.log(error.response.headers);
-            } else if (error.request) {
-                // The request was made but no response was received
-                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                // http.ClientRequest in node.js
-                console.log(error.request);
-            } else {
-                // Something happened in setting up the request that triggered an Error
-                console.log('Error', error.message);
-            }
-            console.log(error.config);
-        });
+        const recaptchaRef = React.createRef();
     }
     onChangeEmail(newEmailValue){
         this.setState({ form: { ...this.state.form, email_address: newEmailValue.target.value } });
@@ -70,6 +53,10 @@ class HQWebsiteTrialForm extends Component{
     }
     onChangeCaptcha(newValue){
         this.setState({ form: { ...this.state.form, g_recaptcha_response: newValue } });
+    }
+    onFailedCaptcha(){
+        console.log('dasda');
+        this.captcha.reset();
     }
     onChangeTerms(){
         this.setState({checkedTerms: ! this.state.checkedTerms});
@@ -169,13 +156,18 @@ class HQWebsiteTrialForm extends Component{
                                 />
                                 <div className="hq-captcha-wrapper">
                                     <ReCAPTCHA
-                                        sitekey="6LdUE54UAAAAAEQMg07RZ-3Bl6sjFYUwwi8OCeoW"
+                                        ref={ref => {
+                                            this.captcha = ref;
+                                        }}
+                                        sitekey={this.hqKey}
                                         onChange={this.onChangeCaptcha.bind(this)}
+                                        onErrored={this.onFailedCaptcha}
                                     />
                                 </div>
                                 <SubmitButton
                                     onSubmit={this.onSubmitForm.bind(this)}
                                     buttonText="Submit"
+
                                 />
                             </div>
                         </form>
