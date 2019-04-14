@@ -28811,7 +28811,7 @@ function (_Component) {
           _this3.captcha = _ref;
         },
         sitekey: this.hqKey,
-        onChange: this.onChangeCaptcha.bind(this),
+        onChange: this.onChangeCaptcha,
         onErrored: this.onFailedCaptcha,
         grecaptcha: grecaptchaObject
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_SubmitButton__WEBPACK_IMPORTED_MODULE_6__["default"], {

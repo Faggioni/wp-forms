@@ -161,7 +161,7 @@ class HQWebsiteTrialForm extends Component{
                                             this.captcha = ref;
                                         }}
                                         sitekey={this.hqKey}
-                                        onChange={this.onChangeCaptcha.bind(this)}
+                                        onChange={this.onChangeCaptcha}
                                         onErrored={this.onFailedCaptcha}
                                         grecaptcha={grecaptchaObject}
                                     />
