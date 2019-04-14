@@ -23,14 +23,15 @@ class HQWebsiteTrialForm extends Component{
         this.validator = new Validator();
         this.state = {
             form:{
+                business_sector_id: '1',
                 email_address: '',
                 company: '',
                 phone_number: '',
                 website: '',
+                g_recaptcha_response: '',
             },
             checkedPrivacy: false,
-            checkedTerms: false,
-            captcha: ''
+            checkedTerms: false
         }
     }
     componentWillMount(){
@@ -67,15 +68,16 @@ class HQWebsiteTrialForm extends Component{
     onChangeWebsite(newWebsiteValue){
         this.setState({ form: { ...this.state.form, website: newWebsiteValue.target.value } });
     }
+    onChangeCaptcha(newValue){
+        this.setState({ form: { ...this.state.form, g_recaptcha_response: newValue } });
+    }
     onChangeTerms(){
         this.setState({checkedTerms: ! this.state.checkedTerms});
     }
     onChangePrivacy(){
         this.setState({checkedPrivacy: ! this.state.checkedPrivacy});
     }
-    onChangeCaptcha(newValue){
-        console.log(newValue);
-    }
+
     onSubmitForm(event) {
         event.preventDefault();
         this.validator.formSubmit(
@@ -83,7 +85,8 @@ class HQWebsiteTrialForm extends Component{
             (success) => {
                 this.connector.submitForm(this.state.form,
                     (response) => {
-                        console.log(response);
+                        console.log(response.data);
+                        window.location.href = response.data.link;
                     },
                     (error) => {
                         if (error.response) {
@@ -166,11 +169,10 @@ class HQWebsiteTrialForm extends Component{
                                 />
                                 <div className="hq-captcha-wrapper">
                                     <ReCAPTCHA
-                                        sitekey="6LfB7RwUAAAAACBpYqkwYZ4GkfP3DTiqa2gsZW2k"
+                                        sitekey="6LdUE54UAAAAAEQMg07RZ-3Bl6sjFYUwwi8OCeoW"
                                         onChange={this.onChangeCaptcha.bind(this)}
                                     />
                                 </div>
-                                <input type="hidden" name="business_sector_id" value="1" />
                                 <SubmitButton
                                     onSubmit={this.onSubmitForm.bind(this)}
                                     buttonText="Submit"

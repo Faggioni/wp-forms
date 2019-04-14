@@ -11,7 +11,9 @@ class ApiConnector {
         } );
     }
     submitForm(data, successCallback, failedCallback){
-        axios(this.getConfig(data)).then( (response) => {
+        let dataToCall = data;
+        dataToCall['g-recaptcha-response'] = data.g_recaptcha_response;
+        axios(this.getConfig(dataToCall)).then( (response) => {
             successCallback(response);
         } ).catch( (error) => {
             failedCallback(error);

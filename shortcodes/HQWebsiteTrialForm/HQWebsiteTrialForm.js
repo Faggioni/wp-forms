@@ -28265,7 +28265,9 @@ function () {
   }, {
     key: "submitForm",
     value: function submitForm(data, successCallback, failedCallback) {
-      axios__WEBPACK_IMPORTED_MODULE_0___default()(this.getConfig(data)).then(function (response) {
+      var dataToCall = data;
+      dataToCall['g-recaptcha-response'] = data.g_recaptcha_response;
+      axios__WEBPACK_IMPORTED_MODULE_0___default()(this.getConfig(dataToCall)).then(function (response) {
         successCallback(response);
       })["catch"](function (error) {
         failedCallback(error);
@@ -28626,14 +28628,15 @@ function (_Component) {
     _this.validator = new _Validator__WEBPACK_IMPORTED_MODULE_9__["default"]();
     _this.state = {
       form: {
+        business_sector_id: '1',
         email_address: '',
         company: '',
         phone_number: '',
-        website: ''
+        website: '',
+        g_recaptcha_response: ''
       },
       checkedPrivacy: false,
-      checkedTerms: false,
-      captcha: ''
+      checkedTerms: false
     };
     return _this;
   }
@@ -28704,6 +28707,15 @@ function (_Component) {
       });
     }
   }, {
+    key: "onChangeCaptcha",
+    value: function onChangeCaptcha(newValue) {
+      this.setState({
+        form: _objectSpread({}, this.state.form, {
+          g_recaptcha_response: newValue
+        })
+      });
+    }
+  }, {
     key: "onChangeTerms",
     value: function onChangeTerms() {
       this.setState({
@@ -28718,11 +28730,6 @@ function (_Component) {
       });
     }
   }, {
-    key: "onChangeCaptcha",
-    value: function onChangeCaptcha(newValue) {
-      console.log(newValue);
-    }
-  }, {
     key: "onSubmitForm",
     value: function onSubmitForm(event) {
       var _this3 = this;
@@ -28730,7 +28737,8 @@ function (_Component) {
       event.preventDefault();
       this.validator.formSubmit(this.state.form, function (success) {
         _this3.connector.submitForm(_this3.state.form, function (response) {
-          console.log(response);
+          console.log(response.data);
+          window.location.href = response.data.link;
         }, function (error) {
           if (error.response) {
             // The request was made and the server responded with a status code
@@ -28812,13 +28820,9 @@ function (_Component) {
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "hq-captcha-wrapper"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_google_recaptcha__WEBPACK_IMPORTED_MODULE_1__["default"], {
-        sitekey: "6LfB7RwUAAAAACBpYqkwYZ4GkfP3DTiqa2gsZW2k",
+        sitekey: "6LdUE54UAAAAAEQMg07RZ-3Bl6sjFYUwwi8OCeoW",
         onChange: this.onChangeCaptcha.bind(this)
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-        type: "hidden",
-        name: "business_sector_id",
-        value: "1"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_SubmitButton__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_SubmitButton__WEBPACK_IMPORTED_MODULE_6__["default"], {
         onSubmit: this.onSubmitForm.bind(this),
         buttonText: "Submit"
       }))))));
