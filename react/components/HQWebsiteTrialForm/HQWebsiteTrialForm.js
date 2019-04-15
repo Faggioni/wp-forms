@@ -50,12 +50,11 @@ class HQWebsiteTrialForm extends Component{
     onChangeWebsite(newWebsiteValue){
         this.setState({ form: { ...this.state.form, website: newWebsiteValue.target.value } });
     }
-    onChangeCaptcha(newValue){
-        this.setState({ form: { ...this.state.form, g_recaptcha_response: newValue } });
+    onLoadCaptcha(){
+        console.log('captcha load');
     }
-    onFailedCaptcha(){
-        console.log('dasda');
-        this.captcha.reset();
+    onVerifyCaptcha(newValue){
+        this.setState({ form: { ...this.state.form, g_recaptcha_response: newValue } });
     }
     onChangeTerms(){
         this.setState({checkedTerms: ! this.state.checkedTerms});
@@ -100,9 +99,6 @@ class HQWebsiteTrialForm extends Component{
                 console.log('errors',errors);
             }
         );
-    }
-    onLoadCaptcha(){
-        console.log('load');
     }
     render(){
         return(
@@ -158,19 +154,21 @@ class HQWebsiteTrialForm extends Component{
                                     checked={this.state.checkedPrivacy}
                                     for="policy"
                                 />
+
                                 <div className="hq-captcha-wrapper">
                                     <Recaptcha
                                         ref={ref => {
                                             this.captcha = ref;
                                         }}
-                                        sitekey={this.devKey}
-                                        onloadCallback={this.onLoadCaptcha.bind(this)}
-                                    />
+                                        sitekey={this.hqKey}
+                                        verifyCallback={this.onVerifyCaptcha.bind(this)}
+t                                    />
                                 </div>
                                 <SubmitButton
                                     onSubmit={this.onSubmitForm.bind(this)}
+                                    onloadCallback={ this.onLoadCaptcha.bind(this) }
                                     buttonText="Submit"
-
+                                    render="explicit"
                                 />
                             </div>
                         </form>

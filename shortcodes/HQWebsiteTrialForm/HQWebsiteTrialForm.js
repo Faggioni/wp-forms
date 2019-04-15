@@ -27191,19 +27191,18 @@ function (_Component) {
       });
     }
   }, {
-    key: "onChangeCaptcha",
-    value: function onChangeCaptcha(newValue) {
+    key: "onLoadCaptcha",
+    value: function onLoadCaptcha() {
+      console.log('captcha load');
+    }
+  }, {
+    key: "onVerifyCaptcha",
+    value: function onVerifyCaptcha(newValue) {
       this.setState({
         form: _objectSpread({}, this.state.form, {
           g_recaptcha_response: newValue
         })
       });
-    }
-  }, {
-    key: "onFailedCaptcha",
-    value: function onFailedCaptcha() {
-      console.log('dasda');
-      this.captcha.reset();
     }
   }, {
     key: "onChangeTerms",
@@ -27252,11 +27251,6 @@ function (_Component) {
         //Forms Errors
         console.log('errors', errors);
       });
-    }
-  }, {
-    key: "onLoadCaptcha",
-    value: function onLoadCaptcha() {
-      console.log('load');
     }
   }, {
     key: "render",
@@ -27320,11 +27314,14 @@ function (_Component) {
         ref: function ref(_ref) {
           _this3.captcha = _ref;
         },
-        sitekey: this.devKey,
-        onloadCallback: this.onLoadCaptcha.bind(this)
+        sitekey: this.hqKey,
+        verifyCallback: this.onVerifyCaptcha.bind(this),
+        t: true
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_SubmitButton__WEBPACK_IMPORTED_MODULE_6__["default"], {
         onSubmit: this.onSubmitForm.bind(this),
-        buttonText: "Submit"
+        onloadCallback: this.onLoadCaptcha.bind(this),
+        buttonText: "Submit",
+        render: "explicit"
       }))))));
     }
   }]);
