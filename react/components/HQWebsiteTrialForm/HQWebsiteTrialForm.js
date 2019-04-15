@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReCAPTCHA from "react-google-recaptcha";
+import Recaptcha from "react-recaptcha";
 /*
  * Fields
  */
@@ -37,7 +37,6 @@ class HQWebsiteTrialForm extends Component{
         }
     }
     componentWillMount(){
-        const recaptchaRef = React.createRef();
     }
     onChangeEmail(newEmailValue){
         this.setState({ form: { ...this.state.form, email_address: newEmailValue.target.value } });
@@ -51,12 +50,11 @@ class HQWebsiteTrialForm extends Component{
     onChangeWebsite(newWebsiteValue){
         this.setState({ form: { ...this.state.form, website: newWebsiteValue.target.value } });
     }
-    onChangeCaptcha(newValue){
-        this.setState({ form: { ...this.state.form, g_recaptcha_response: newValue } });
+    onLoadCaptcha(){
+        console.log('captcha load');
     }
-    onFailedCaptcha(){
-        console.log('dasda');
-        this.captcha.reset();
+    onVerifyCaptcha(newValue){
+        this.setState({ form: { ...this.state.form, g_recaptcha_response: newValue } });
     }
     onChangeTerms(){
         this.setState({checkedTerms: ! this.state.checkedTerms});
@@ -68,7 +66,9 @@ class HQWebsiteTrialForm extends Component{
     onSubmitForm(event) {
         event.preventDefault();
         this.validator.formSubmit(
-            (this.state.form),
+            this.state.form,
+            this.state.checkedTerms,
+            this.state.checkedPrivacy,
             (success) => {
                 this.connector.submitForm(this.state.form,
                     (response) => {
@@ -155,21 +155,20 @@ class HQWebsiteTrialForm extends Component{
                                     checked={this.state.checkedPrivacy}
                                     for="policy"
                                 />
+
                                 <div className="hq-captcha-wrapper">
-                                    <ReCAPTCHA
+                                    <Recaptcha
                                         ref={ref => {
                                             this.captcha = ref;
                                         }}
                                         sitekey={this.hqKey}
-                                        onChange={this.onChangeCaptcha}
-                                        onErrored={this.onFailedCaptcha}
-                                        grecaptcha={grecaptchaObject}
-                                    />
+                                        verifyCallback={this.onVerifyCaptcha.bind(this)}
+t                                    />
                                 </div>
                                 <SubmitButton
                                     onSubmit={this.onSubmitForm.bind(this)}
+                                    onloadCallback={ this.onLoadCaptcha.bind(this) }
                                     buttonText="Submit"
-
                                 />
                             </div>
                         </form>
