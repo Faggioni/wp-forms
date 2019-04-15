@@ -37,7 +37,6 @@ class HQWebsiteTrialForm extends Component{
         }
     }
     componentWillMount(){
-        const recaptchaRef = React.createRef();
     }
     onChangeEmail(newEmailValue){
         this.setState({ form: { ...this.state.form, email_address: newEmailValue.target.value } });
@@ -68,7 +67,9 @@ class HQWebsiteTrialForm extends Component{
     onSubmitForm(event) {
         event.preventDefault();
         this.validator.formSubmit(
-            (this.state.form),
+            this.state.form,
+            this.state.checkedTerms,
+            this.state.checkedPrivacy,
             (success) => {
                 this.connector.submitForm(this.state.form,
                     (response) => {

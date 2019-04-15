@@ -7,7 +7,7 @@ class Validator {
             failed: false
         }
     }
-    formSubmit(formData, successCallback, failedCallback){
+    formSubmit(formData, terms, privacy, successCallback, failedCallback){
         if(this.emailFieldValidationFailed(formData.email_address)){
             failedCallback(this.emailFieldValidationFailed(formData.email_address));
         }else if(this.textFieldValidationFailed(formData.company)){
@@ -16,6 +16,10 @@ class Validator {
             failedCallback(this.phoneValidationFailed(formData.phone_number));
         }else if(this.textFieldValidationFailed(formData.website)){
             failedCallback(this.textFieldValidationFailed(formData.website, 'Website field is required'));
+        }else if(!terms){
+            alert('Please agree to our terms and conditions');
+        }else if(!privacy){
+            alert('Please agree to our privacy policy');
         }else{
             successCallback(true);
         }

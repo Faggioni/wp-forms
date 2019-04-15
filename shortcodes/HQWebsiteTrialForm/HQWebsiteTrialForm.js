@@ -28645,9 +28645,7 @@ function (_Component) {
 
   _createClass(HQWebsiteTrialForm, [{
     key: "componentWillMount",
-    value: function componentWillMount() {
-      var recaptchaRef = react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef();
-    }
+    value: function componentWillMount() {}
   }, {
     key: "onChangeEmail",
     value: function onChangeEmail(newEmailValue) {
@@ -28719,7 +28717,7 @@ function (_Component) {
       var _this2 = this;
 
       event.preventDefault();
-      this.validator.formSubmit(this.state.form, function (success) {
+      this.validator.formSubmit(this.state.form, this.state.checkedTerms, this.state.checkedPrivacy, function (success) {
         _this2.connector.submitForm(_this2.state.form, function (response) {
           console.log(response.data);
           window.location.href = response.data.link;
@@ -29064,7 +29062,7 @@ function () {
 
   _createClass(Validator, [{
     key: "formSubmit",
-    value: function formSubmit(formData, successCallback, failedCallback) {
+    value: function formSubmit(formData, terms, privacy, successCallback, failedCallback) {
       if (this.emailFieldValidationFailed(formData.email_address)) {
         failedCallback(this.emailFieldValidationFailed(formData.email_address));
       } else if (this.textFieldValidationFailed(formData.company)) {
@@ -29073,6 +29071,10 @@ function () {
         failedCallback(this.phoneValidationFailed(formData.phone_number));
       } else if (this.textFieldValidationFailed(formData.website)) {
         failedCallback(this.textFieldValidationFailed(formData.website, 'Website field is required'));
+      } else if (!terms) {
+        alert('Please agree to our terms and conditions');
+      } else if (!privacy) {
+        alert('Please agree to our privacy policy');
       } else {
         successCallback(true);
       }
@@ -29153,7 +29155,7 @@ function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/faggioni/WordpressDev/wpreactplugin/wp-content/plugins/hq-website/react/App.js */"./react/App.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\wpreact\wp-content\plugins\wp-forms\react\App.js */"./react/App.js");
 
 
 /***/ })
