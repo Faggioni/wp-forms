@@ -27320,8 +27320,7 @@ function (_Component) {
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_SubmitButton__WEBPACK_IMPORTED_MODULE_6__["default"], {
         onSubmit: this.onSubmitForm.bind(this),
         onloadCallback: this.onLoadCaptcha.bind(this),
-        buttonText: "Submit",
-        render: "explicit"
+        buttonText: "Submit"
       }))))));
     }
   }]);

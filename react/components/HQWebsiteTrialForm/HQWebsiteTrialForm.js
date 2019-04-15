@@ -168,7 +168,6 @@ t                                    />
                                     onSubmit={this.onSubmitForm.bind(this)}
                                     onloadCallback={ this.onLoadCaptcha.bind(this) }
                                     buttonText="Submit"
-                                    render="explicit"
                                 />
                             </div>
                         </form>
