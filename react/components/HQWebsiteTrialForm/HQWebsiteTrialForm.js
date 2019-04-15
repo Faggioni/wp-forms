@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Recaptcha from "react-recaptcha";
+import ReCAPTCHA from "react-google-recaptcha";
 /*
  * Fields
  */
@@ -32,11 +32,20 @@ class HQWebsiteTrialForm extends Component{
                 website: '',
                 g_recaptcha_response: '',
             },
+            callback: 'dasda',
             checkedPrivacy: false,
-            checkedTerms: false
+            checkedTerms: false,
+            captchaLoad: false
         }
     }
     componentWillMount(){
+        console.log('mounted');
+    }
+    componentDidMount(){
+        setTimeout(() => {
+            this.setState({ captchaLoad: true });
+            console.log('wait');
+        }, 1000);
     }
     onChangeEmail(newEmailValue){
         this.setState({ form: { ...this.state.form, email_address: newEmailValue.target.value } });
@@ -54,6 +63,8 @@ class HQWebsiteTrialForm extends Component{
         console.log('captcha load');
     }
     onVerifyCaptcha(newValue){
+        console.log(newValue);
+        console.log('change');
         this.setState({ form: { ...this.state.form, g_recaptcha_response: newValue } });
     }
     onChangeTerms(){
@@ -100,8 +111,27 @@ class HQWebsiteTrialForm extends Component{
             }
         );
     }
+    asyncScriptOnLoad(){
+        this.setState({ callback: "called!" });
+        console.log("scriptLoad - reCaptcha Ref-");
+    };
+    showCaptcha(){
+        if(this.state.captchaLoad){
+            return(
+                <ReCAPTCHA
+                    ref={ref => {
+                        this.captcha = ref;
+                    }}
+                    style={{ display: "inline-block" }}
+                    theme="dark"
+                    sitekey='6LdUE54UAAAAAEQMg07RZ-3Bl6sjFYUwwi8OCeoW'
+                    onChange={this.onVerifyCaptcha.bind(this)}
+                    asyncScriptOnLoad={this.asyncScriptOnLoad.bind(this)}
+                />
+            );
+        }
+    }
     render(){
-        const grecaptchaObject = window.grecaptcha;
         return(
             <div>
                 <div className="elementor-element elementor-element-30425b9 mainform elementor-button-align-end elementor-widget elementor-widget-form">
@@ -155,19 +185,9 @@ class HQWebsiteTrialForm extends Component{
                                     checked={this.state.checkedPrivacy}
                                     for="policy"
                                 />
-
-                                <div className="hq-captcha-wrapper">
-                                    <Recaptcha
-                                        ref={ref => {
-                                            this.captcha = ref;
-                                        }}
-                                        sitekey={this.hqKey}
-                                        verifyCallback={this.onVerifyCaptcha.bind(this)}
-t                                    />
-                                </div>
+                                { this.showCaptcha() }
                                 <SubmitButton
                                     onSubmit={this.onSubmitForm.bind(this)}
-                                    onloadCallback={ this.onLoadCaptcha.bind(this) }
                                     buttonText="Submit"
                                 />
                             </div>
