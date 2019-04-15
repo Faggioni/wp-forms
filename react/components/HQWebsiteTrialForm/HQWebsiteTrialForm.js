@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReCAPTCHA from "react-google-recaptcha";
+import Recaptcha from "react-recaptcha";
 /*
  * Fields
  */
@@ -101,6 +101,9 @@ class HQWebsiteTrialForm extends Component{
             }
         );
     }
+    onLoadCaptcha(){
+        console.log('load');
+    }
     render(){
         return(
             <div>
@@ -156,13 +159,12 @@ class HQWebsiteTrialForm extends Component{
                                     for="policy"
                                 />
                                 <div className="hq-captcha-wrapper">
-                                    <ReCAPTCHA
+                                    <Recaptcha
                                         ref={ref => {
                                             this.captcha = ref;
                                         }}
-                                        sitekey={this.hqKey}
-                                        onChange={this.onChangeCaptcha.bind(this)}
-                                        onErrored={this.onFailedCaptcha}
+                                        sitekey={this.devKey}
+                                        onloadCallback={this.onLoadCaptcha.bind(this)}
                                     />
                                 </div>
                                 <SubmitButton
