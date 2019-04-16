@@ -22,7 +22,7 @@ class HQWebsiteTrialForm extends Component{
         this.hqKey = '6LfB7RwUAAAAACBpYqkwYZ4GkfP3DTiqa2gsZW2k';
         this.devKey = '6LdUE54UAAAAAEQMg07RZ-3Bl6sjFYUwwi8OCeoW';
         this.state = {
-            form:{
+            form :{
                 business_sector_id: '1',
                 email_address: '',
                 company: '',
@@ -33,6 +33,12 @@ class HQWebsiteTrialForm extends Component{
             checkedPrivacy: false,
             checkedTerms: false,
             captchaLoad: false
+        }
+    }
+    componentDidMount(){
+        var emailField = document.getElementById('form-field-hq_home_email').value;
+        if(emailField !== ''){
+            this.setState({ form: { ...this.state.form, email_address: emailField } });
         }
     }
     onChangeEmail(newEmailValue){
@@ -67,7 +73,6 @@ class HQWebsiteTrialForm extends Component{
             (success) => {
                 this.connector.submitForm(this.state.form,
                     (response) => {
-                        console.log(response.data);
                         window.location.href = response.data.link;
                     },
                     (error) => {
@@ -95,7 +100,6 @@ class HQWebsiteTrialForm extends Component{
             }
         );
     }
-
 
     render(){
         return(

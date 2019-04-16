@@ -13,7 +13,7 @@ class HQWebsiteTrialForm
         ?>
         <div id="hq-app">
         </div>
-        <script type='text/javascript' src='http://wpreact.test/wp-content/plugins/wp-forms/shortcodes/HQWebsiteTrialForm/HQWebsiteTrialForm.js?ver=0.1.1'></script>
+        <script type='text/javascript' src='/wp-content/plugins/wp-forms/shortcodes/HQWebsiteTrialForm/HQWebsiteTrialForm.js?ver=0.2.2'></script>
         <?php
     }
 }

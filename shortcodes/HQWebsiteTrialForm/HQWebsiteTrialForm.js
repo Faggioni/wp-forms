@@ -27052,6 +27052,19 @@ function (_Component) {
   }
 
   _createClass(HQWebsiteTrialForm, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var emailField = document.getElementById('form-field-hq_home_email').value;
+
+      if (emailField !== '') {
+        this.setState({
+          form: _objectSpread({}, this.state.form, {
+            email_address: emailField
+          })
+        });
+      }
+    }
+  }, {
     key: "onChangeEmail",
     value: function onChangeEmail(newEmailValue) {
       this.setState({
@@ -27119,7 +27132,6 @@ function (_Component) {
       event.preventDefault();
       this.validator.formSubmit(this.state.form, this.state.checkedTerms, this.state.checkedPrivacy, function (success) {
         _this2.connector.submitForm(_this2.state.form, function (response) {
-          console.log(response.data);
           window.location.href = response.data.link;
         }, function (error) {
           if (error.response) {
