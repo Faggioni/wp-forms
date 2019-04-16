@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReCAPTCHA from "react-google-recaptcha";
+import Recaptcha from "react-recaptcha";
 /*
  * Fields
  */
@@ -15,7 +15,7 @@ import Captcha from './Captcha';
  */
 import ApiConnector from './ApiConnector';
 import Validator from './Validator';
-
+import VisibilitySensor from 'react-visibility-sensor';
 class HQWebsiteTrialForm extends Component{
     constructor(props){
         super(props);
@@ -32,19 +32,16 @@ class HQWebsiteTrialForm extends Component{
                 website: '',
                 g_recaptcha_response: '',
             },
-            callback: 'dasda',
             checkedPrivacy: false,
             checkedTerms: false,
             captchaLoad: false
         }
     }
     componentWillMount(){
-        console.log('mounted');
     }
     componentDidMount(){
         setTimeout(() => {
             this.setState({ captchaLoad: true });
-            console.log('wait');
         }, 1000);
     }
     onChangeEmail(newEmailValue){
@@ -59,12 +56,8 @@ class HQWebsiteTrialForm extends Component{
     onChangeWebsite(newWebsiteValue){
         this.setState({ form: { ...this.state.form, website: newWebsiteValue.target.value } });
     }
-    onLoadCaptcha(){
-        console.log('captcha load');
-    }
     onVerifyCaptcha(newValue){
         console.log(newValue);
-        console.log('change');
         this.setState({ form: { ...this.state.form, g_recaptcha_response: newValue } });
     }
     onChangeTerms(){
@@ -76,6 +69,7 @@ class HQWebsiteTrialForm extends Component{
 
     onSubmitForm(event) {
         event.preventDefault();
+        /*
         this.validator.formSubmit(
             this.state.form,
             this.state.checkedTerms,
@@ -109,34 +103,17 @@ class HQWebsiteTrialForm extends Component{
                 //Forms Errors
                 console.log('errors',errors);
             }
-        );
+        );*/
     }
     asyncScriptOnLoad(){
-        this.setState({ callback: "called!" });
-        console.log("scriptLoad - reCaptcha Ref-");
+        this.captcha.reset();
     };
-    showCaptcha(){
-        if(this.state.captchaLoad){
-            return(
-                <ReCAPTCHA
-                    ref={ref => {
-                        this.captcha = ref;
-                    }}
-                    style={{ display: "inline-block" }}
-                    theme="dark"
-                    sitekey='6LdUE54UAAAAAEQMg07RZ-3Bl6sjFYUwwi8OCeoW'
-                    onChange={this.onVerifyCaptcha.bind(this)}
-                    asyncScriptOnLoad={this.asyncScriptOnLoad.bind(this)}
-                />
-            );
-        }
-    }
     render(){
         return(
             <div>
                 <div className="elementor-element elementor-element-30425b9 mainform elementor-button-align-end elementor-widget elementor-widget-form">
                     <div className="elementor-widget-container">
-                        <form className="elementor-form" method="post" action="https://caag.caagcrm.com/public/caag/trial-accounts/setup">
+                        <form id="hq-trial-form" className="elementor-form" method="post" action="https://caag.caagcrm.com/public/caag/trial-accounts/setup">
                             <div className="elementor-form-fields-wrapper elementor-labels-">
                                 <EmailField
                                     label="Email"
@@ -185,7 +162,16 @@ class HQWebsiteTrialForm extends Component{
                                     checked={this.state.checkedPrivacy}
                                     for="policy"
                                 />
-                                { this.showCaptcha() }
+                                <div className="hq-captcha-wrapper">
+                                    <script src="https://www.google.com/recaptcha/api.js"></script>
+                                    <Recaptcha
+                                        ref={ref => {
+                                            this.captcha = ref;
+                                        }}
+                                        sitekey={this.devKey}
+                                        verifyCallback={this.onVerifyCaptcha.bind(this)}
+                                    />
+                                </div>
                                 <SubmitButton
                                     onSubmit={this.onSubmitForm.bind(this)}
                                     buttonText="Submit"
