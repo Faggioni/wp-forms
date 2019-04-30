@@ -84,7 +84,7 @@ class HQWebsitePricingCalculatorShortcode{
                 background-color: #fff;
                 border: none !important;
                 background: #fff !important;
-                color:#7a7e97 !important;
+                color:#ffc613 !important;
                 text-align: center;
             }
             .hq-rental-pricing-input:focus{
