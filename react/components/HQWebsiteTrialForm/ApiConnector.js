@@ -2,7 +2,6 @@ import axios from 'axios';
 
 
 class ApiConnector {
-
     getCaptcha(successCallback, failedCallback){
         axios(this.getCaptchaConfig()).then( (response) => {
             successCallback(response);

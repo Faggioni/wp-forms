@@ -54,7 +54,6 @@ class HQWebsiteTrialForm extends Component{
         this.setState({ form: { ...this.state.form, website: newWebsiteValue.target.value } });
     }
     onVerifyCaptcha(newValue){
-        console.log('dsadsa');
         this.setState({ form: { ...this.state.form, g_recaptcha_response: newValue } });
     }
     onChangeTerms(){
