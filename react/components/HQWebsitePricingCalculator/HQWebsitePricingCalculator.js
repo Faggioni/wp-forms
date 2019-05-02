@@ -4,11 +4,17 @@ class HQWebsitePricingCalculator extends Component{
     constructor(props){
         super(props);
         this.state = {
-            numberOfCars: '',
+            numberOfCars: 200,
             monthlyRate: 0,
             yearlyRate: 0
         }
     }
+    componentWillMount() {
+        let monthlyPrice = this.getMonthlyPrice(this.state.numberOfCars);
+        let yearlyPrice = 10 * monthlyPrice;
+        this.setState({ monthlyRate: monthlyPrice,  yearlyRate: yearlyPrice});
+    }
+
     onChangeVehicleInput(newCarValue){
         let monthlyPrice = 0;
         // Validation for Calculations
@@ -19,25 +25,29 @@ class HQWebsitePricingCalculator extends Component{
             if(newInput > 10000){
                 newInput = 10000;
             }
-            if(newInput< 0){
+            if(newInput < 0){
                 newInput = 0;
             }
-            if( 200 <= newInput && newInput <= 499 ){
-                monthlyPrice = ( newInput - 200 ) * 1.00 + (200 * 1.50) ;
-            }
-            if( 500 <= newInput && newInput <= 999 ){
-                monthlyPrice =  + ((newInput - 500) * 0.75 ) + (200 * 1.50) + (300 * 1.00);
-            }
-            if( 1000 <= newInput && newInput <= 2499 ){
-                monthlyPrice = ((newInput - 1000) * 0.50) + (500 * 0.75) + (300 * 1.00) +(200 * 1.50);
-            }
-            if( 2500 <= newInput && newInput <= 10000 ){
-                monthlyPrice = ((newInput - 2500) * 0.25) + (1500 * 0.75) + (300 * 1.00) +(200 * 1.50);
-            }
+            let monthlyPrice = this.getMonthlyPrice(newInput);
             let yearlyPrice = monthlyPrice * 10;
             this.setState({ numberOfCars: newInput, monthlyRate: monthlyPrice, yearlyRate: yearlyPrice } );
         }
-
+    }
+    getMonthlyPrice(cars){
+        let month = 0;
+        if( 200 <= cars && cars <= 499 ){
+            month = ( cars - 200 ) * 1.00 + (200 * 1.50) ;
+        }
+        if( 500 <= cars && cars <= 999 ){
+            month =  + ((cars - 500) * 0.75 ) + (200 * 1.50) + (300 * 1.00);
+        }
+        if( 1000 <= cars && cars <= 2499 ){
+            month = ((cars - 1000) * 0.50) + (500 * 0.75) + (300 * 1.00) +(200 * 1.50);
+        }
+        if( 2500 <= cars && cars <= 10000 ){
+            month = ((cars - 2500) * 0.25) + (1500 * 0.75) + (300 * 1.00) +(200 * 1.50);
+        }
+        return month;
     }
     render(){
         return(
