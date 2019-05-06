@@ -7,6 +7,7 @@ import EmailField from './EmailField';
 import TextField from './TextField';
 import PhoneField from './PhoneField';
 import CheckboxField from './CheckboxField';
+import SelectField from './SelectField';
 import SubmitButton from './SubmitButton';
 
 /**
@@ -22,13 +23,13 @@ class HQWebsiteTrialForm extends Component{
         this.hqKey = '6LfB7RwUAAAAACBpYqkwYZ4GkfP3DTiqa2gsZW2k';
         this.devKey = '6LdUE54UAAAAAEQMg07RZ-3Bl6sjFYUwwi8OCeoW';
         this.state = {
-            form :{
+            form : {
                 business_sector_id: '1',
                 email_address: '',
                 company: '',
                 phone_number: '',
                 website: '',
-                g_recaptcha_response: '',
+                g_recaptcha_response: ''
             },
             checkedPrivacy: false,
             checkedTerms: false,
@@ -36,9 +37,13 @@ class HQWebsiteTrialForm extends Component{
         }
     }
     componentDidMount(){
-        var emailField = document.getElementById('form-field-hq_home_email').value;
+        let emailField = document.getElementById('form-field-hq_home_email').value;
         if(emailField !== ''){
-            this.setState({ form: { ...this.state.form, email_address: emailField } });
+            this.setState({ form: { ...this.state.form, email_address: emailField } } );
+        }
+        let emailFieldBottom = document.getElementById('form-field-hq_home_email_bottom').value;
+        if(emailFieldBottom !== ''){
+            this.setState({ form: { ...this.state.form, email_address: emailFieldBottom } } );
         }
     }
     onChangeEmail(newEmailValue){
@@ -46,6 +51,9 @@ class HQWebsiteTrialForm extends Component{
     }
     onChangeCompany(newCompanyValue){
         this.setState({ form: { ...this.state.form, company: newCompanyValue.target.value } });
+    }
+    onChangeBusinessSector(newValue){
+        this.setState({ form: { ...this.state.form, business_sector_id: newValue.target.value } });
     }
     onChangePhone(newPhoneValue){
         this.setState({ form: { ...this.state.form, phone_number: newPhoneValue.target.value } });
@@ -78,9 +86,6 @@ class HQWebsiteTrialForm extends Component{
                         if (error.response) {
                             // The request was made and the server responded with a status code
                             // that falls out of the range of 2xx
-                            console.log(error.response.data);
-                            console.log(error.response.status);
-                            console.log(error.response.headers);
                         } else if (error.request) {
                             // The request was made but no response was received
                             // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
@@ -122,6 +127,9 @@ class HQWebsiteTrialForm extends Component{
                                 onChange={this.onChangeCompany.bind(this)}
                                 fieldName="company"
                             />
+                            <SelectField
+                                onChange={this.onChangeBusinessSector.bind(this)}
+                            />
                             <PhoneField
                                 title="Only numbers and phone characters (#, -, *, etc) are accepted."
                                 label="Phone Number"
@@ -148,6 +156,7 @@ class HQWebsiteTrialForm extends Component{
                                 postAnchorText="."
                                 anchorHref="/terms-of-service"
                                 for="terms"
+                                id="term"
                             />
                             <CheckboxField
                                 label="Privacy Policy"
@@ -160,6 +169,7 @@ class HQWebsiteTrialForm extends Component{
                                 postAnchorText=" including the Cookies Policy."
                                 anchorHref="/privacy-policy"
                                 for="policy"
+                                id="policy"
                             />
                             <div className="hq-captcha-wrapper">
                                 <Recaptcha
@@ -171,6 +181,7 @@ class HQWebsiteTrialForm extends Component{
                                     verifyCallback={this.onVerifyCaptcha.bind(this)}
                                 />
                             </div>
+                            <input type="hidden" name="business_sector_id" value={this.state.form.business_sector_id} />
                             <SubmitButton
                                 onSubmit={this.onSubmitForm.bind(this)}
                                 buttonText="Submit"
