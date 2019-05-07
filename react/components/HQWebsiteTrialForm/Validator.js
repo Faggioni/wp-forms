@@ -12,14 +12,10 @@ class Validator {
             failedCallback(this.emailFieldValidationFailed(formData.email_address));
         }else if(this.textFieldValidationFailed(formData.company)){
             failedCallback(this.textFieldValidationFailed(formData.company, "Company field is required"));
-        }else if(this.phoneValidationFailed(formData.phone_number)){
-            failedCallback(this.phoneValidationFailed(formData.phone_number));
-        }else if(this.textFieldValidationFailed(formData.website)){
-            failedCallback(this.textFieldValidationFailed(formData.website, 'Website field is required'));
         }else if(!terms){
-            alert('Please agree to our terms and conditions');
+            //alert('Please agree to our terms and conditions');
         }else if(!privacy){
-            alert('Please agree to our privacy policy');
+            //alert('Please agree to our privacy policy');
         }else{
             successCallback(true);
         }
@@ -28,12 +24,14 @@ class Validator {
         if(this.isEmpty(fieldValue)){
             return {
                 message: 'Email field is required',
-                failed: true
+                failed: true,
+                errorType: 0
             }
         }else if(this.isNotEmail(fieldValue)){
             return {
                 message: 'Please enter a valid email address',
-                failed: true
+                failed: true,
+                errorType: 1
             }
         }else{
             return null;

@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Recaptcha from "react-recaptcha";
+import tippy from 'tippy.js'
 /*
  * Fields
  */
 import EmailField from './EmailField';
 import TextField from './TextField';
+import TextFieldRequired from './TextFieldRequired';
 import PhoneField from './PhoneField';
 import CheckboxField from './CheckboxField';
 import SelectField from './SelectField';
@@ -15,15 +17,19 @@ import SubmitButton from './SubmitButton';
  */
 import ApiConnector from './ApiConnector';
 import Validator from './Validator';
-class HQWebsiteTrialForm extends Component{
-    constructor(props){
+
+
+class HQWebsiteTrialForm extends Component {
+    constructor(props) {
         super(props);
         this.connector = new ApiConnector();
         this.validator = new Validator();
         this.hqKey = '6LfB7RwUAAAAACBpYqkwYZ4GkfP3DTiqa2gsZW2k';
         this.devKey = '6LdUE54UAAAAAEQMg07RZ-3Bl6sjFYUwwi8OCeoW';
+        this.companyTippy = '';
+        this.emailTippy = '';
         this.state = {
-            form : {
+            form: {
                 business_sector_id: '1',
                 email_address: '',
                 company: '',
@@ -36,99 +42,131 @@ class HQWebsiteTrialForm extends Component{
             captchaLoad: false
         }
     }
-    componentDidMount(){
-        let emailField = document.getElementById('form-field-hq_home_email').value;
-        if(emailField !== ''){
-            this.setState({ form: { ...this.state.form, email_address: emailField } } );
+
+    componentDidMount() {
+        let emailField = document.getElementById('form-field-hq_home_email');
+        let emailFieldBottom = document.getElementById('form-field-hq_home_email_bottom');
+        if (emailField) {
+            if(emailField !== ''){
+                this.setState({form: {...this.state.form, email_address: emailField.value}});
+            }
         }
-        let emailFieldBottom = document.getElementById('form-field-hq_home_email_bottom').value;
-        if(emailFieldBottom !== ''){
-            this.setState({ form: { ...this.state.form, email_address: emailFieldBottom } } );
+        if(emailFieldBottom){
+            if(emailFieldBottom.value !== ''){
+                this.setState({form: {...this.state.form, email_address: emailFieldBottom.value}});
+            }
+        }
+        let businessSector = document.getElementById('form-field-hq_business_sector');
+        let businessSectorBottom = document.getElementById('form-field-hq_business_sector_bottom');
+        if(businessSector){
+            if(businessSector !== ''){
+                this.setState({ form: { ...this.state.form, business_sector_id: businessSector.value } });
+            }
+
+        }
+        if(businessSectorBottom){
+            if(businessSectorBottom !== ''){
+                this.setState({ form: { ...this.state.form, business_sector_id: businessSectorBottom.value } });
+            }
         }
     }
-    onChangeEmail(newEmailValue){
-        this.setState({ form: { ...this.state.form, email_address: newEmailValue.target.value } });
+    componentDidUpdate(){
+        console.log('displayed');
     }
-    onChangeCompany(newCompanyValue){
-        this.setState({ form: { ...this.state.form, company: newCompanyValue.target.value } });
+    onChangeEmail(newEmailValue) {
+        this.setState({form: {...this.state.form, email_address: newEmailValue.target.value}});
     }
-    onChangeBusinessSector(newValue){
-        this.setState({ form: { ...this.state.form, business_sector_id: newValue.target.value } });
+
+    onChangeCompany(newCompanyValue) {
+        this.setState({form: {...this.state.form, company: newCompanyValue.target.value}});
     }
-    onChangePhone(newPhoneValue){
-        this.setState({ form: { ...this.state.form, phone_number: newPhoneValue.target.value } });
+
+    onChangeBusinessSector(newValue) {
+        this.setState({form: {...this.state.form, business_sector_id: newValue.target.value}});
     }
-    onChangeWebsite(newWebsiteValue){
-        this.setState({ form: { ...this.state.form, website: newWebsiteValue.target.value } });
+
+    onChangePhone(newPhoneValue) {
+        this.setState({form: {...this.state.form, phone_number: newPhoneValue.target.value}});
     }
-    onVerifyCaptcha(newValue){
-        this.setState({ form: { ...this.state.form, g_recaptcha_response: newValue } });
+
+    onChangeWebsite(newWebsiteValue) {
+        this.setState({form: {...this.state.form, website: newWebsiteValue.target.value}});
     }
-    onChangeTerms(){
-        this.setState({checkedTerms: ! this.state.checkedTerms});
+
+    onVerifyCaptcha(newValue) {
+        this.setState({form: {...this.state.form, g_recaptcha_response: newValue}});
     }
-    onChangePrivacy(){
-        this.setState({checkedPrivacy: ! this.state.checkedPrivacy});
+
+    onChangeTerms() {
+        this.setState({checkedTerms: !this.state.checkedTerms});
+    }
+
+    onChangePrivacy() {
+        this.setState({checkedPrivacy: !this.state.checkedPrivacy});
     }
 
     onSubmitForm(event) {
-        event.preventDefault();
+        //event.preventDefault();
+
         this.validator.formSubmit(
             this.state.form,
             this.state.checkedTerms,
             this.state.checkedPrivacy,
-            (success) => {
+            () => {
                 this.connector.submitForm(this.state.form,
                     (response) => {
+                        console.log(response);
                         window.location.href = response.data.link;
                     },
                     (error) => {
                         if (error.response) {
                             // The request was made and the server responded with a status code
                             // that falls out of the range of 2xx
+                            //console.log('no 200', error.response);
+                            alert(error.response.data.message);
                         } else if (error.request) {
                             // The request was made but no response was received
                             // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                             // http.ClientRequest in node.js
-                            console.log(error.request);
+                            alert("There was an issues with your request. Please try again.");
                         } else {
                             // Something happened in setting up the request that triggered an Error
-                            console.log('Error', error.message);
+                            alert("There was an issues internally with your request. Please try again.");
                         }
-                        console.log(error.config);
                     });
             },
             (errors) => {
                 //Forms Errors
-                console.log('errors',errors);
+                //alert(errors.message);
             }
         );
     }
 
-    render(){
-        return(
-            <div className="elementor-element elementor-element-30425b9 mainform elementor-button-align-end elementor-widget elementor-widget-form">
+    render() {
+        return (
+            <div
+                className="elementor-element elementor-element-30425b9 mainform elementor-button-align-end elementor-widget elementor-widget-form">
                 <div className="elementor-widget-container">
-                    <form id="hq-trial-form" className="elementor-form" method="post" action="https://caag.caagcrm.com/public/caag/trial-accounts/setup">
+                    <form id="hq-trial-form" className="elementor-form" method="post"
+                          action="https://caag.caagcrm.com/public/caag/trial-accounts/setup">
                         <div className="elementor-form-fields-wrapper elementor-labels-">
                             <EmailField
-                                label="Email"
+                                label="Email *"
                                 for="email"
-                                placeholder="Your Email"
+                                placeholder="Your Email *"
                                 value={this.state.form.email_address}
                                 onChange={this.onChangeEmail.bind(this)}
                                 fieldName="email_address"
+                                required
                             />
-                            <TextField
-                                label="Company"
-                                placeholder="Your Company"
+                            <TextFieldRequired
+                                label="Company *"
+                                placeholder="Your Company *"
                                 for="company"
                                 value={this.state.form.company}
                                 onChange={this.onChangeCompany.bind(this)}
                                 fieldName="company"
-                            />
-                            <SelectField
-                                onChange={this.onChangeBusinessSector.bind(this)}
+                                required
                             />
                             <PhoneField
                                 title="Only numbers and phone characters (#, -, *, etc) are accepted."
@@ -144,6 +182,9 @@ class HQWebsiteTrialForm extends Component{
                                 for="website"
                                 value={this.state.form.website}
                                 onChange={this.onChangeWebsite.bind(this)}
+                            />
+                            <SelectField
+                                onChange={this.onChangeBusinessSector.bind(this)}
                             />
                             <CheckboxField
                                 label="Terms of Service"
@@ -181,7 +222,7 @@ class HQWebsiteTrialForm extends Component{
                                     verifyCallback={this.onVerifyCaptcha.bind(this)}
                                 />
                             </div>
-                            <input type="hidden" name="business_sector_id" value={this.state.form.business_sector_id} />
+                            <input type="hidden" name="business_sector_id" value={this.state.form.business_sector_id}/>
                             <SubmitButton
                                 onSubmit={this.onSubmitForm.bind(this)}
                                 buttonText="Submit"
@@ -193,4 +234,5 @@ class HQWebsiteTrialForm extends Component{
         );
     }
 }
+
 export default HQWebsiteTrialForm;

@@ -61,7 +61,7 @@ class HQWebsitePricingCalculator extends Component{
                     </div>
                     <div className="elementor-element elementor-widget elementor-widget-text-editor hq-header2-text hq-header-wrapper">
                         <div className="elementor-widget-container hq-header2-inner-wrapper">
-                            <div className="elementor-text-editor elementor-clearfix"><p>I have a fleet with <span
+                            <div className="elementor-text-editor elementor-clearfix"><p>I have a fleet of <span
                                 className="number-choose-main"><input type="text" placeholder="#" onChange={this.onChangeVehicleInput.bind(this)} value={this.state.numberOfCars} className="hq-rental-pricing-input anim-typewriter" /></span> vehicles</p></div>
                         </div>
                     </div>
