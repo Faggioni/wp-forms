@@ -70,9 +70,6 @@ class HQWebsiteTrialForm extends Component {
             }
         }
     }
-    componentDidUpdate(){
-        console.log('displayed');
-    }
     onChangeEmail(newEmailValue) {
         this.setState({form: {...this.state.form, email_address: newEmailValue.target.value}});
     }
