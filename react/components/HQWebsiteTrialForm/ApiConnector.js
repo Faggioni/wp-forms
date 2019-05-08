@@ -12,6 +12,7 @@ class ApiConnector {
     submitForm(data, successCallback, failedCallback){
         let dataToCall = data;
         dataToCall['g-recaptcha-response'] = data.g_recaptcha_response;
+        delete dataToCall.g_recaptcha_response;
         axios(this.getConfig(dataToCall)).then( (response) => {
             successCallback(response);
         } ).catch( (error) => {
@@ -19,8 +20,10 @@ class ApiConnector {
         } );
     }
     getConfig(formData){
+        //Header is to avoid option request
+        console.log(formData);
         return {
-            method: 'post',
+            method: "post",
             url: "https://caag.caagcrm.com/public/caag/trial-accounts/setup",
             data: formData
         }

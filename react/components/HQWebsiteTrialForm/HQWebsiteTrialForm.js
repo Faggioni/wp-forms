@@ -45,28 +45,28 @@ class HQWebsiteTrialForm extends Component {
 
     componentDidMount() {
         let emailField = document.getElementById('form-field-hq_home_email');
-        let emailFieldBottom = document.getElementById('form-field-hq_home_email_bottom');
+        let businessSector = document.getElementById('form-field-hq_business_sector');
+
         if (emailField) {
-            if(emailField !== ''){
-                this.setState({form: {...this.state.form, email_address: emailField.value}});
+            if(emailField.value !== ''){
+                if(businessSector){
+                    this.setState({form: {...this.state.form, email_address: emailField.value, business_sector_id: businessSector.value }});
+                }else{
+                    this.setState({form: {...this.state.form, email_address: emailField.value}});
+                }
             }
         }
+        let emailFieldBottom = document.getElementById('form-field-hq_home_email_bottom');
+        let businessSectorBottom = document.getElementById('form-field-hq_business_sector_bottom');
         if(emailFieldBottom){
             if(emailFieldBottom.value !== ''){
-                this.setState({form: {...this.state.form, email_address: emailFieldBottom.value}});
-            }
-        }
-        let businessSector = document.getElementById('form-field-hq_business_sector');
-        let businessSectorBottom = document.getElementById('form-field-hq_business_sector_bottom');
-        if(businessSector){
-            if(businessSector !== ''){
-                this.setState({ form: { ...this.state.form, business_sector_id: businessSector.value } });
-            }
-
-        }
-        if(businessSectorBottom){
-            if(businessSectorBottom !== ''){
-                this.setState({ form: { ...this.state.form, business_sector_id: businessSectorBottom.value } });
+                if(businessSectorBottom){
+                    console.log('5', emailFieldBottom.value, businessSector);
+                    this.setState({form: {...this.state.form, email_address: emailFieldBottom.value, business_sector_id: businessSectorBottom.value }});
+                }else{
+                    console.log('6', emailFieldBottom.value);
+                    this.setState({form: {...this.state.form, email_address: emailFieldBottom.value}});
+                }
             }
         }
     }
@@ -103,8 +103,7 @@ class HQWebsiteTrialForm extends Component {
     }
 
     onSubmitForm(event) {
-        //event.preventDefault();
-
+        event.preventDefault();
         this.validator.formSubmit(
             this.state.form,
             this.state.checkedTerms,
@@ -112,7 +111,6 @@ class HQWebsiteTrialForm extends Component {
             () => {
                 this.connector.submitForm(this.state.form,
                     (response) => {
-                        console.log(response);
                         window.location.href = response.data.link;
                     },
                     (error) => {
@@ -134,7 +132,7 @@ class HQWebsiteTrialForm extends Component {
             },
             (errors) => {
                 //Forms Errors
-                //alert(errors.message);
+                alert(errors.message);
             }
         );
     }
@@ -181,6 +179,7 @@ class HQWebsiteTrialForm extends Component {
                                 onChange={this.onChangeWebsite.bind(this)}
                             />
                             <SelectField
+                                value={this.state.form.business_sector_id}
                                 onChange={this.onChangeBusinessSector.bind(this)}
                             />
                             <CheckboxField
@@ -219,7 +218,6 @@ class HQWebsiteTrialForm extends Component {
                                     verifyCallback={this.onVerifyCaptcha.bind(this)}
                                 />
                             </div>
-                            <input type="hidden" name="business_sector_id" value={this.state.form.business_sector_id}/>
                             <SubmitButton
                                 onSubmit={this.onSubmitForm.bind(this)}
                                 buttonText="Submit"
