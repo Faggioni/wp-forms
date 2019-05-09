@@ -9,10 +9,30 @@ class HQWebsiteTrialForm
     public function hqWebsiteTrialForm()
     {
         //We ca not use the enqueue way because the way that the modal shows the form -> append to he end of the body tag
+        //Africa -> AF
+        //Europe -> EU
+
+        //Asia -> AS
+        //Oceania ->OC
+
+        //Antarctica -> AN
+        //South America -> SA
+        //North America -> NA
+        $user = geoip_detect2_get_info_from_current_ip();
+        $continent = $user->continent->code;
+        $action = 'https://caag.caagcrm.com/public/caag/trial-accounts/setup';
+        if($continent == 'AF' or $continent == 'EU'){
+            $action = 'https://caag-europe.hqrentals.eu/public/caag/trial-accounts/setup';
+        }elseif($continent == 'AS' or $continent == 'OC' ){
+            $action = 'https://caag-asia.hqrentals.asia/public/caag/trial-accounts/setup';
+        }
         ?>
+        <script>
+            var formAction = "<?php echo $action; ?>"
+        </script>
         <div id="hq-app">
         </div>
-        <script type='text/javascript' src='/wp-content/plugins/wp-forms/shortcodes/HQWebsiteTrialForm/HQWebsiteTrialForm.js?ver=0.2.5'></script>
+        <script type='text/javascript' src='/wp-content/plugins/wp-forms/shortcodes/HQWebsiteTrialForm/HQWebsiteTrialForm.js?ver=0.4.5'></script>
         <style>
             .elementor-field-type-select{
                 margin-bottom: 15px;

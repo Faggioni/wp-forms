@@ -29,6 +29,7 @@ class HQWebsiteTrialForm extends Component {
         this.companyTippy = '';
         this.emailTippy = '';
         this.state = {
+            formAction: 'https://caag.caagcrm.com/public/caag/trial-accounts/setup',
             form: {
                 business_sector_id: '1',
                 email_address: '',
@@ -46,7 +47,6 @@ class HQWebsiteTrialForm extends Component {
     componentDidMount() {
         let emailField = document.getElementById('form-field-hq_home_email');
         let businessSector = document.getElementById('form-field-hq_business_sector');
-
         if (emailField) {
             if(emailField.value !== ''){
                 if(businessSector){
@@ -108,8 +108,10 @@ class HQWebsiteTrialForm extends Component {
             this.state.form,
             this.state.checkedTerms,
             this.state.checkedPrivacy,
-            () => {
-                this.connector.submitForm(this.state.form,
+            ( ) => {
+                this.connector.submitForm(
+                    this.state.formAction,
+                    this.state.form,
                     (response) => {
                         window.location.href = response.data.link;
                     },
@@ -118,7 +120,7 @@ class HQWebsiteTrialForm extends Component {
                             // The request was made and the server responded with a status code
                             // that falls out of the range of 2xx
                             //console.log('no 200', error.response);
-                            alert(error.response.data.message);
+                            alert(error.response.data.errors.all_errors[0]);
                         } else if (error.request) {
                             // The request was made but no response was received
                             // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
@@ -143,7 +145,7 @@ class HQWebsiteTrialForm extends Component {
                 className="elementor-element elementor-element-30425b9 mainform elementor-button-align-end elementor-widget elementor-widget-form">
                 <div className="elementor-widget-container">
                     <form id="hq-trial-form" className="elementor-form" method="post"
-                          action="https://caag.caagcrm.com/public/caag/trial-accounts/setup">
+                          action={this.state.formAction}>
                         <div className="elementor-form-fields-wrapper elementor-labels-">
                             <EmailField
                                 label="Email *"

@@ -9,22 +9,21 @@ class ApiConnector {
             failedCallback(error);
         } );
     }
-    submitForm(data, successCallback, failedCallback){
+    submitForm(formAction, data, successCallback, failedCallback){
         let dataToCall = data;
         dataToCall['g-recaptcha-response'] = data.g_recaptcha_response;
         delete dataToCall.g_recaptcha_response;
-        axios(this.getConfig(dataToCall)).then( (response) => {
+        axios(this.getConfig(formAction, dataToCall)).then( (response) => {
             successCallback(response);
         } ).catch( (error) => {
             failedCallback(error);
         } );
     }
-    getConfig(formData){
+    getConfig(formAction, formData){
         //Header is to avoid option request
-        console.log(formData);
         return {
             method: "post",
-            url: "https://caag.caagcrm.com/public/caag/trial-accounts/setup",
+            url: formAction,
             data: formData
         }
     }
