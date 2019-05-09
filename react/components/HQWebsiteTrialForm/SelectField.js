@@ -12,7 +12,8 @@ class SelectField extends Component{
                     <select name="business_sector_id" placeholder="Your Business Sector" onChange={this.props.onChange} value={this.props.value} className="elementor-field-textual elementor-size-xs" required="required" aria-required="true">
                         <option value="1">Car Rental</option>
                         <option value="9">Motorbike Rental</option>
-                        <option value="11">Equipment Rental</option>
+                        <option value="11">Boats</option>
+                        <option value="12">Equipment Rental</option>
                     </select>
                 </div>
             </div>
