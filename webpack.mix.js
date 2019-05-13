@@ -13,3 +13,4 @@ const mix = require('laravel-mix');
 
 mix.react('react/App.js', 'shortcodes/HQWebsiteTrialForm/HQWebsiteTrialForm.js');
 mix.react('react/PricingCalculatorShortcodeApp.js', 'shortcodes/HQWebsitePricingCalculator/HQWebsitePricingCalculator.js');
+mix.react('react/HQWebsiteTrialFormSupportApp.js', 'shortcodes/HQWebsiteTrialFormSupport/HQWebsiteTrialFormSupport.js');

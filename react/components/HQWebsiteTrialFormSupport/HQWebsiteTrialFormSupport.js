@@ -19,7 +19,7 @@ import ApiConnector from './ApiConnector';
 import Validator from './Validator';
 
 
-class HQWebsiteTrialForm extends Component {
+class HQWebsiteTrialFormSupport extends Component {
     constructor(props) {
         super(props);
         this.connector = new ApiConnector();
@@ -233,4 +233,4 @@ class HQWebsiteTrialForm extends Component {
     }
 }
 
-export default HQWebsiteTrialForm;
+export default HQWebsiteTrialFormSupport;
