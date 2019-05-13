@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import Recaptcha from "react-recaptcha";
-import tippy from 'tippy.js'
 /*
  * Fields
  */
@@ -10,6 +9,7 @@ import TextFieldRequired from './TextFieldRequired';
 import PhoneField from './PhoneField';
 import CheckboxField from './CheckboxField';
 import SelectField from './SelectField';
+import SelectFieldZone from './SelectFieldZone';
 import SubmitButton from './SubmitButton';
 
 /**
@@ -26,8 +26,6 @@ class HQWebsiteTrialFormSupport extends Component {
         this.validator = new Validator();
         this.hqKey = '6LfB7RwUAAAAACBpYqkwYZ4GkfP3DTiqa2gsZW2k';
         this.devKey = '6LdUE54UAAAAAEQMg07RZ-3Bl6sjFYUwwi8OCeoW';
-        this.companyTippy = '';
-        this.emailTippy = '';
         this.state = {
             formAction: 'https://caag.caagcrm.com/public/caag/trial-accounts/setup',
             form: {
@@ -40,7 +38,6 @@ class HQWebsiteTrialFormSupport extends Component {
             },
             checkedPrivacy: false,
             checkedTerms: false,
-            captchaLoad: false
         }
     }
 
@@ -61,10 +58,8 @@ class HQWebsiteTrialFormSupport extends Component {
         if(emailFieldBottom){
             if(emailFieldBottom.value !== ''){
                 if(businessSectorBottom){
-                    console.log('5', emailFieldBottom.value, businessSector);
                     this.setState({form: {...this.state.form, email_address: emailFieldBottom.value, business_sector_id: businessSectorBottom.value }});
                 }else{
-                    console.log('6', emailFieldBottom.value);
                     this.setState({form: {...this.state.form, email_address: emailFieldBottom.value}});
                 }
             }
@@ -90,7 +85,9 @@ class HQWebsiteTrialFormSupport extends Component {
     onChangeWebsite(newWebsiteValue) {
         this.setState({form: {...this.state.form, website: newWebsiteValue.target.value}});
     }
-
+    onChangeFormAction(newValue){
+        this.setState({formAction: newValue.target.value } );
+    }
     onVerifyCaptcha(newValue) {
         this.setState({form: {...this.state.form, g_recaptcha_response: newValue}});
     }
@@ -184,6 +181,11 @@ class HQWebsiteTrialFormSupport extends Component {
                             <SelectField
                                 value={this.state.form.business_sector_id}
                                 onChange={this.onChangeBusinessSector.bind(this)}
+                            />
+                            <SelectFieldZone
+                                label="Zone"
+                                value={this.state.formAction}
+                                onChange={this.onChangeFormAction.bind(this)}
                             />
                             <CheckboxField
                                 label="Terms of Service"
