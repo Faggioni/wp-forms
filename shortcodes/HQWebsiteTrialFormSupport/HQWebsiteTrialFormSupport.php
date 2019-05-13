@@ -23,11 +23,6 @@ class HQWebsiteTrialFormSupport{
             var formAction = "<?php echo $action; ?>"
         </script>
         <div id="hq-trial-form-support-app"></div>
-        <style>
-            .terms-text-form{
-                color:#808285 !important;
-            }
-        </style>
         <?php
     }
 
